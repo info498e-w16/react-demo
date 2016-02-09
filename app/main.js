@@ -4,15 +4,35 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-//message to show
-var message = React.createElement(
-    'h1',                  //html tag
-    {attribute : 'value'}, //object of attributes
-    'Hello World!'         //content
-); 
 
+var MessageItem = React.createClass({
 
-//show the content in the web page (inside the tag with id="content")
-ReactDOM.render(message, document.getElementById('content'));
+  handleClick: function(){
+      console.log('you clicked '+this.props.message);
+  },
 
-console.log('message rendered!');
+  render: function() {
+    return <li onClick={this.handleClick}>{this.props.message}</li>;
+  }
+});
+
+var MessageList = React.createClass({
+  render: function() {      
+    
+    var msgItems = this.props.messages.map(function(value, index) {
+        return <MessageItem message={index+ " " + value} />
+    }, this)
+    
+    return (
+      <ul> {msgItems} </ul>
+    );
+  }
+});
+
+var messages = [
+  "Hello world!", "Goodbye y'all!", "Is it dinner yet?", 
+  "Cats are fun!", "But dogs are funner"  
+];
+
+//render all
+ReactDOM.render(<MessageList messages={messages} />, document.getElementById('content'));
